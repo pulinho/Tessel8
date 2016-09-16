@@ -23,10 +23,11 @@ public class GeometryManager {
     private ArrayList<Line> lineList = new ArrayList<>();
 
     private Point pickedPoint;
-    private Paint paint;
+    private Paint gridPaint;
+    private Paint edgePaint;
 
     private Matrix gridMatrix1;
-    //private Matrix gridMatrix2;
+    private Matrix gridMatrix2;
     private Matrix gridHalfInverted = new Matrix();
     private Matrix gridNextLine = new Matrix();
 
@@ -35,16 +36,23 @@ public class GeometryManager {
         GeometryInitiator initiator = new GeometryInitiator(this);
         initiator.triangle1();
 
-        initPaint();
+        initPaints();
     }
 
-    private void initPaint(){
-        paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeJoin(Paint.Join.ROUND);
-        paint.setStrokeWidth(4f);
+    private void initPaints(){
+        gridPaint = new Paint();
+        gridPaint.setAntiAlias(true);
+        gridPaint.setColor(Color.BLACK);
+        gridPaint.setStyle(Paint.Style.FILL);
+        gridPaint.setStrokeJoin(Paint.Join.ROUND);
+        gridPaint.setStrokeWidth(4f);
+
+        edgePaint = new Paint();
+        edgePaint.setAntiAlias(true);
+        edgePaint.setColor(Color.RED);
+        edgePaint.setStyle(Paint.Style.STROKE);
+        edgePaint.setStrokeJoin(Paint.Join.ROUND);
+        edgePaint.setStrokeWidth(8f);
     }
 
     public void addLine(Line l){
@@ -79,9 +87,11 @@ public class GeometryManager {
 
         path.lineTo(first.getX(), first.getY());
 
-        //canvas.drawPath(path, paint);
+        //canvas.drawPath(path, gridPaint);
 
         drawGrid(path, canvas);
+        canvas.drawPath(path, edgePaint);
+        drawStationaryPoints(canvas);
     }
 
     private void drawGrid(Path path, Canvas canvas){
@@ -91,19 +101,27 @@ public class GeometryManager {
         canvas.concat(gridHalfInverted);
 
         for(int i = 0; i < GRID_WIDTH; i++){
-
             for(int j = 0; j < GRID_WIDTH; j++){
-                canvas.drawPath(path, paint);
+                canvas.drawPath(path, gridPaint);
                 canvas.concat(gridMatrix1);
             }
 
-            canvas.concat(gridNextLine);
+            if(i < GRID_WIDTH - 1) canvas.concat(gridNextLine);
+        }
+
+        canvas.concat(gridHalfInverted);
+        canvas.concat(gridMatrix2);
+    }
+
+    private void drawStationaryPoints(Canvas canvas){
+        for(Point p : pointList){
+            if(p.isStationary()) canvas.drawCircle(p.getX(), p.getY(), 6f, edgePaint);
         }
     }
 
     public void setGridMatrices(Matrix gm1, Matrix gm2) {
         this.gridMatrix1 = gm1;
-        //this.gridMatrix2 = gm2;
+        this.gridMatrix2 = gm2;
 
         Matrix inv1 = new Matrix();
         Matrix inv2 = new Matrix();
