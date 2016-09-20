@@ -16,8 +16,9 @@ import cz.pule.tessel8.geometry.Point;
  */
 public class GeometryManager {
 
-    private static final float PICKING_WIDTH = 30.0f; // todo: density
     private static final int GRID_WIDTH = 40;
+    private static final float PICKING_WIDTH_UNSCALED = 15;
+    private static float pickingWidth;
 
     private ArrayList<Point> pointList = new ArrayList<>(); // todo: remove, use lineList only
     private ArrayList<Line> lineList = new ArrayList<>();
@@ -31,7 +32,9 @@ public class GeometryManager {
     private Matrix gridHalfInverted = new Matrix();
     private Matrix gridNextLine = new Matrix();
 
-    public GeometryManager(){
+    public GeometryManager(float pickingWidthScale){
+
+        pickingWidth = PICKING_WIDTH_UNSCALED * pickingWidthScale;
 
         GeometryInitiator initiator = new GeometryInitiator(this);
         initiator.triangle1();
@@ -167,7 +170,7 @@ public class GeometryManager {
     private Line pickLine(float x, float y){
 
         Line closestLine = null;
-        float closestDistance = PICKING_WIDTH;
+        float closestDistance = pickingWidth;
 
         for(Line l : lineList){
             float distance = l.getDistance(x, y);
@@ -184,7 +187,7 @@ public class GeometryManager {
     private Point pickPoint(float x, float y){
 
         Point closestPoint = null;
-        float closestDistance = PICKING_WIDTH;
+        float closestDistance = pickingWidth;
 
         for(Point p : pointList){
 

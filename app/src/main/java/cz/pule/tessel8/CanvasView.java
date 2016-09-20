@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -15,10 +16,13 @@ public class CanvasView extends View {
 
     private Matrix viewMatrix;
     private TouchController touchController;
-    private GeometryManager geometryManager = new GeometryManager();
+    private GeometryManager geometryManager;
 
     public CanvasView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        geometryManager = new GeometryManager(metrics.density);
     }
 
     @Override
