@@ -7,6 +7,6 @@
             android:title="triangle1" />
         <item
             android:id="@+id/quad1"
-            android:title="quad1" />
+            android:title="square1" />
     </group>
 </menu>

@@ -51,4 +51,8 @@ public class CanvasView extends View {
         invalidate();
         return true;
     }
+
+    public GeometryManager getGeometryManager() {
+        return geometryManager;
+    }
 }

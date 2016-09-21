@@ -5,10 +5,12 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cz.pule.tessel8.MainActivity">
+    tools:context="cz.pule.tessel8.MainActivity"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
     <cz.pule.tessel8.CanvasView
-        android:id="@+id/signature_canvas"
+        android:id="@+id/canvas_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="#FFFFFF"  />

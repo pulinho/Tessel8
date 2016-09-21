@@ -32,11 +32,13 @@ public class GeometryManager {
     private Matrix gridHalfInverted = new Matrix();
     private Matrix gridNextLine = new Matrix();
 
+    private GeometryInitiator initiator;
+
     public GeometryManager(float pickingWidthScale){
 
         pickingWidth = PICKING_WIDTH_UNSCALED * pickingWidthScale;
 
-        GeometryInitiator initiator = new GeometryInitiator(this);
+        initiator = new GeometryInitiator(this);
         initiator.triangle1();
 
         initPaints();
@@ -56,6 +58,23 @@ public class GeometryManager {
         edgePaint.setStyle(Paint.Style.STROKE);
         edgePaint.setStrokeJoin(Paint.Join.ROUND);
         edgePaint.setStrokeWidth(8f);
+    }
+
+    private void clear(){
+        lineList.clear();
+        pointList.clear();
+        gridHalfInverted.reset();
+        gridNextLine.reset();
+    }
+
+    public void triangle1(){
+        clear();
+        initiator.triangle1();
+    }
+
+    public void square1(){
+        clear();
+        initiator.square1();
     }
 
     public void addLine(Line l){
